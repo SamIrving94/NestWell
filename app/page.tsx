@@ -1,14 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { NestAnimation } from "@/components/nest-animation"
 import { FeatherFloat } from "@/components/feather-float"
 import { FeaturesSection } from "@/components/features-section"
-import { PersonalizedDashboard } from "@/components/personalized-dashboard"
 
 export default function Home() {
+  const router = useRouter()
   const [showContent, setShowContent] = useState(false)
   const [showHeadline, setShowHeadline] = useState(false)
   const [showSubtitle, setShowSubtitle] = useState(false)
@@ -16,80 +17,29 @@ export default function Home() {
   const [isReturningUser, setIsReturningUser] = useState(false)
 
   useEffect(() => {
-    // Check if user has completed onboarding
-    const hasCompletedOnboarding = localStorage.getItem("nestwell-onboarding-complete")
-    const hasUserData = localStorage.getItem("nestwell-user-data")
+    // Check if user has completed onboarding and should go to hub
+    const hasCompletedScore = localStorage.getItem("nestwell-score-complete")
+    const hasVisitedHub = localStorage.getItem("nestwell-hub-visited")
 
-    if (hasCompletedOnboarding && hasUserData) {
-      setIsReturningUser(true)
-      setShowContent(true)
-    } else {
-      // Animation sequence timing for new users
-      const timer1 = setTimeout(() => setShowContent(true), 2000) // After nest animation
-      const timer2 = setTimeout(() => setShowHeadline(true), 2500)
-      const timer3 = setTimeout(() => setShowSubtitle(true), 3500)
-      const timer4 = setTimeout(() => setShowButton(true), 4200)
-
-      return () => {
-        clearTimeout(timer1)
-        clearTimeout(timer2)
-        clearTimeout(timer3)
-        clearTimeout(timer4)
-      }
+    if (hasCompletedScore || hasVisitedHub) {
+      // Redirect returning users to hub
+      router.push("/hub")
+      return
     }
-  }, [])
 
-  // Returning user experience
-  if (isReturningUser) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100">
-        {/* Header */}
-        <header className="border-b bg-white/80 backdrop-blur-sm">
-          <div className="container mx-auto py-4 px-4 flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-white"
-                >
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                  <polyline points="9 22 9 12 15 12 15 22" />
-                </svg>
-              </div>
-              <span className="text-xl font-semibold">NestWell</span>
-            </Link>
+    // Animation sequence timing for new users
+    const timer1 = setTimeout(() => setShowContent(true), 2000) // After nest animation
+    const timer2 = setTimeout(() => setShowHeadline(true), 2500)
+    const timer3 = setTimeout(() => setShowSubtitle(true), 3500)
+    const timer4 = setTimeout(() => setShowButton(true), 4200)
 
-            <nav className="flex items-center gap-4">
-              <Link href="/dashboard" className="text-amber-600 font-medium">
-                Dashboard
-              </Link>
-              <Link href="/score" className="text-gray-600 hover:text-gray-800">
-                My Score
-              </Link>
-              <Link href="/insights" className="text-gray-600 hover:text-gray-800">
-                Insights
-              </Link>
-              <Link href="/planner" className="text-gray-600 hover:text-gray-800">
-                Planner
-              </Link>
-            </nav>
-          </div>
-        </header>
-
-        <main className="container mx-auto px-4 py-8">
-          <PersonalizedDashboard />
-        </main>
-      </div>
-    )
-  }
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+      clearTimeout(timer3)
+      clearTimeout(timer4)
+    }
+  }, [router])
 
   // New user experience
   return (
