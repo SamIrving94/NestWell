@@ -1,33 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import {
-  TrendingUp,
-  Calendar,
-  Target,
-  Sparkles,
-  ArrowRight,
-  Plus,
-  Heart,
-  Shield,
-  PiggyBank,
-  Users,
-  Home,
-  Brain,
-  Calculator,
-  Activity,
-} from "lucide-react"
-import { FloatingFeatherReward } from "@/components/floating-feather-reward"
-import { AffirmationPopup } from "@/components/affirmation-popup"
+import { CircularProgressBar } from "@/components/circular-progress-bar"
+import { FinancialHealthCard } from "@/components/financial-health-card"
+import { HealthLifestyleCard } from "@/components/health-lifestyle-card"
+import { InsuranceCard } from "@/components/insurance-card"
+import { LongTermCareCard } from "@/components/long-term-care-card"
+import { FamilyLegacyCard } from "@/components/family-legacy-card"
+import { TimelinePlanner } from "@/components/timeline-planner"
+import { AIAssistantPlanner } from "@/components/ai-assistant-planner"
 
 interface CentralHubProps {
   userName?: string
-  userScore?: number
+  userScore: number
   scoreChange?: number
   lastVisit?: string
   recentActivity?: string[]
@@ -43,482 +32,425 @@ interface CentralHubProps {
 
 export function CentralHub({
   userName = "Sam",
-  userScore = 77,
-  scoreChange = 5,
-  lastVisit = "3 days ago",
-  recentActivity = [
-    "Completed NestWell Score assessment",
-    "Explored healthcare cost comparison",
-    "Added pension details",
-  ],
+  userScore = 72,
+  scoreChange = 0,
+  lastVisit = "2 days ago",
+  recentActivity = [],
   nextMilestone = {
-    title: "Review insurance coverage",
+    title: "Review pension options",
     date: "Next month",
-    category: "insurance",
-    age: 67,
+    category: "financial",
+    age: 65,
   },
-  completedModules = ["score", "health-assessment"],
-  pendingActions = 4,
+  completedModules = [],
+  pendingActions = 3,
 }: CentralHubProps) {
-  const [showCelebration, setShowCelebration] = useState(false)
-  const [showAffirmation, setShowAffirmation] = useState(false)
-  const [timeOfDay, setTimeOfDay] = useState("")
-  const [activeModule, setActiveModule] = useState<string | null>(null)
+  const [showAddMilestone, setShowAddMilestone] = useState(false)
+  const currentAge = 65 // Would come from user data
+  const timeOfDay = getTimeOfDay()
 
-  useEffect(() => {
+  function getTimeOfDay() {
     const hour = new Date().getHours()
-    if (hour < 12) setTimeOfDay("morning")
-    else if (hour < 17) setTimeOfDay("afternoon")
-    else setTimeOfDay("evening")
-
-    // Show celebration for new score
-    if (scoreChange > 0) {
-      setShowCelebration(true)
-      setShowAffirmation(true)
-      setTimeout(() => {
-        setShowCelebration(false)
-        setShowAffirmation(false)
-      }, 4000)
-    }
-  }, [scoreChange])
+    if (hour < 12) return "morning"
+    if (hour < 18) return "afternoon"
+    return "evening"
+  }
 
   const getGreeting = () => {
-    const greetings = {
-      morning: `Good morning, ${userName}`,
-      afternoon: `Good afternoon, ${userName}`,
-      evening: `Good evening, ${userName}`,
-    }
-    return greetings[timeOfDay as keyof typeof greetings] || `Hello, ${userName}`
-  }
-
-  const getScoreMessage = () => {
-    if (userScore >= 80) return "Excellent planning! You're well-prepared for the future."
-    if (userScore >= 70) return "Good foundation! A few improvements will strengthen your plan."
-    if (userScore >= 60) return "Solid start! Let's build on what you have."
-    return "Great beginning! Every step forward makes a difference."
-  }
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "financial":
-        return "bg-green-100 text-green-800"
-      case "insurance":
-        return "bg-blue-100 text-blue-800"
-      case "health":
-        return "bg-purple-100 text-purple-800"
-      case "care":
-        return "bg-red-100 text-red-800"
-      case "lifestyle":
-        return "bg-orange-100 text-orange-800"
+    switch (timeOfDay) {
+      case "morning":
+        return "Good morning"
+      case "afternoon":
+        return "Good afternoon"
+      case "evening":
+        return "Good evening"
       default:
-        return "bg-gray-100 text-gray-800"
+        return "Hello"
     }
   }
 
-  const planningModules = [
-    {
-      id: "financial-health",
-      title: "Financial Health",
-      description: "Pensions, savings, and investment planning",
-      icon: <PiggyBank className="w-6 h-6" />,
-      score: 75,
-      status: completedModules.includes("financial") ? "completed" : "pending",
-      actions: ["Add pension details", "Review investment portfolio"],
-      link: "/insights",
-      color: "from-green-50 to-emerald-50",
-      borderColor: "border-green-200",
-    },
-    {
-      id: "insurance-coverage",
-      title: "Insurance Coverage",
-      description: "Health, life, and care insurance planning",
-      icon: <Shield className="w-6 h-6" />,
-      score: 68,
-      status: completedModules.includes("insurance") ? "completed" : "pending",
-      actions: ["Compare health insurance", "Review life insurance"],
-      link: "/healthcare-costs",
-      color: "from-blue-50 to-sky-50",
-      borderColor: "border-blue-200",
-    },
-    {
-      id: "health-lifestyle",
-      title: "Health & Lifestyle",
-      description: "Wellbeing and lifestyle planning for later life",
-      icon: <Heart className="w-6 h-6" />,
-      score: 82,
-      status: completedModules.includes("health-assessment") ? "completed" : "pending",
-      actions: ["Update health assessment", "Plan social activities"],
-      link: "/health-lifestyle",
-      color: "from-purple-50 to-pink-50",
-      borderColor: "border-purple-200",
-    },
-    {
-      id: "care-planning",
-      title: "Care Planning",
-      description: "Future care needs and cost planning",
-      icon: <Users className="w-6 h-6" />,
-      score: 45,
-      status: "pending",
-      actions: ["Explore care scenarios", "Plan care funding"],
-      link: "/care-scenarios",
-      color: "from-red-50 to-rose-50",
-      borderColor: "border-red-200",
-    },
-    {
-      id: "family-legacy",
-      title: "Family & Legacy",
-      description: "Inheritance planning and family support",
-      icon: <Home className="w-6 h-6" />,
-      score: 60,
-      status: "pending",
-      actions: ["Update will", "Plan family gifts"],
-      link: "/insights",
-      color: "from-amber-50 to-orange-50",
-      borderColor: "border-amber-200",
-    },
-    {
-      id: "advice-costs",
-      title: "Advice & Costs",
-      description: "Financial advice and fee optimization",
-      icon: <Calculator className="w-6 h-6" />,
-      score: 90,
-      status: "completed",
-      actions: ["Compare advice fees", "Find flat-fee advisors"],
-      link: "/advice-comparison",
-      color: "from-indigo-50 to-blue-50",
-      borderColor: "border-indigo-200",
-    },
-  ]
+  const getScoreChangeIndicator = () => {
+    if (scoreChange > 0) return { text: `+${scoreChange}`, color: "text-green-600" }
+    if (scoreChange < 0) return { text: scoreChange.toString(), color: "text-red-600" }
+    return { text: "0", color: "text-gray-600" }
+  }
 
-  const quickActions = [
-    {
-      title: "Add Pension Details",
-      description: "Update your pension information",
-      icon: <Plus className="w-4 h-4" />,
-      action: () => setActiveModule("pension-modal"),
-    },
-    {
-      title: "Explore Care Costs",
-      description: "Understand potential care expenses",
-      icon: <Activity className="w-4 h-4" />,
-      link: "/care-scenarios",
-    },
-    {
-      title: "Compare Healthcare Options",
-      description: "NHS vs private healthcare costs",
-      icon: <Heart className="w-4 h-4" />,
-      link: "/healthcare-costs",
-    },
-    {
-      title: "View Full Timeline",
-      description: "See your complete planning timeline",
-      icon: <Calendar className="w-4 h-4" />,
-      link: "/planner",
-    },
-  ]
-
-  const aiSuggestions = [
-    "Want to explore care costs for your timeline?",
-    "Should I help you compare health insurance options?",
-    "Ready to add your next savings goal?",
-    "Let's review your pension consolidation options",
-  ]
+  const scoreChangeIndicator = getScoreChangeIndicator()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100">
-      {showCelebration && <FloatingFeatherReward />}
-      {showAffirmation && <AffirmationPopup message={`Congratulations on your NestWell Score of ${userScore}! 🌟`} />}
-
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto">
         {/* Welcome Header */}
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-amber-50 via-orange-50 to-sky-100 mb-8">
-          <CardContent className="p-8">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-              <div className="flex-1">
-                <h1 className="text-3xl font-serif font-semibold text-gray-800 mb-2">{getGreeting()}! 👋</h1>
-                <p className="text-xl text-gray-600 mb-2">Welcome to your NestWell planning hub.</p>
-                <p className="text-gray-500">Last visit: {lastVisit}</p>
-              </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-serif font-semibold text-gray-800">
+            {getGreeting()}, <span className="text-amber-600">{userName}</span>
+          </h1>
+          <p className="text-gray-600">Your personalized planning hub</p>
+        </div>
 
-              {/* Score Display */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg min-w-[200px]">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-amber-600 mb-2">{userScore}</div>
-                  <div className="text-sm text-gray-600 mb-2">NestWell Score</div>
-                  {scoreChange !== 0 && (
-                    <div
-                      className={`text-sm flex items-center justify-center gap-1 ${
-                        scoreChange > 0 ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      <TrendingUp className={`w-4 h-4 ${scoreChange < 0 ? "rotate-180" : ""}`} />
-                      {scoreChange > 0 ? "+" : ""}
-                      {scoreChange} since last visit
-                    </div>
-                  )}
-                  <p className="text-xs text-gray-500 mt-2">{getScoreMessage()}</p>
+        {/* Score and Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* NestWell Score */}
+          <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Your NestWell Score</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="w-24 h-24">
+                  <CircularProgressBar percentage={userScore} />
+                </div>
+                <div className="text-right">
+                  <div className="text-4xl font-bold">{userScore}</div>
+                  <div className={`text-sm font-medium ${scoreChangeIndicator.color}`}>
+                    {scoreChangeIndicator.text} since last visit
+                  </div>
+                  <Link href="/score">
+                    <Button variant="link" className="text-amber-600 p-0 h-auto text-sm">
+                      View details
+                    </Button>
+                  </Link>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Stats */}
+          <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Planning Progress</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-amber-50 p-3 rounded-lg">
+                  <div className="text-2xl font-bold text-amber-700">
+                    {completedModules?.length || 0}
+                    <span className="text-sm text-amber-600 font-normal">/6</span>
+                  </div>
+                  <div className="text-sm text-gray-600">Modules Completed</div>
+                </div>
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-700">{pendingActions}</div>
+                  <div className="text-sm text-gray-600">Pending Actions</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Next Milestone */}
+          <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Next Milestone</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-start gap-3">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    nextMilestone.category === "financial"
+                      ? "bg-green-100 text-green-600"
+                      : nextMilestone.category === "health"
+                        ? "bg-blue-100 text-blue-600"
+                        : nextMilestone.category === "insurance"
+                          ? "bg-purple-100 text-purple-600"
+                          : "bg-amber-100 text-amber-600"
+                  }`}
+                >
+                  {nextMilestone.category === "financial" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M16 8h-6.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6" />
+                      <path d="M12 18v2" />
+                      <path d="M12 6V4" />
+                    </svg>
+                  ) : nextMilestone.category === "health" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                  ) : nextMilestone.category === "insurance" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+                      <path d="M7 2v20" />
+                      <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <div className="font-medium">{nextMilestone.title}</div>
+                  <div className="text-sm text-gray-600">
+                    {nextMilestone.date} • Age {nextMilestone.age}
+                  </div>
+                  <Link href="/planner">
+                    <Button variant="link" className="text-amber-600 p-0 h-auto text-sm">
+                      View timeline
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="modules" className="mb-12">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="modules">Planning Modules</TabsTrigger>
+            <TabsTrigger value="timeline">Your Timeline</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="modules" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Financial Health */}
+              <FinancialHealthCard />
+
+              {/* Insurance Coverage */}
+              <InsuranceCard />
+
+              {/* Health & Lifestyle */}
+              <HealthLifestyleCard />
+
+              {/* Long-term Care */}
+              <LongTermCareCard />
+
+              {/* Family & Legacy */}
+              <FamilyLegacyCard />
+
+              {/* Advice & Costs */}
+              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-purple-500"
+                      >
+                        <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+                        <path d="M7 7h.01" />
+                      </svg>
+                      Advice & Costs
+                    </CardTitle>
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Coming Soon</span>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Compare advice options and understand the costs of financial guidance.
+                  </p>
+                  <Link href="/advice-comparison">
+                    <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
+                      Explore Advice Options
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="timeline" className="mt-0">
+            <Card className="border-0 shadow-md">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Your Planning Timeline</CardTitle>
+                  <Button
+                    onClick={() => setShowAddMilestone(true)}
+                    className="bg-amber-500 hover:bg-amber-600 text-white"
+                  >
+                    Add Milestone
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <TimelinePlanner />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Recent Activity */}
+        <Card className="border-0 shadow-md mb-12">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivity.length > 0 ? (
+                recentActivity.map((activity, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-amber-600"
+                      >
+                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="font-medium">{activity}</div>
+                      <div className="text-xs text-gray-500">
+                        {index === 0 ? "Today" : index === 1 ? "Yesterday" : "3 days ago"}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-gray-500">No recent activity to show</div>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Modules Completed</p>
-                  <p className="text-2xl font-bold text-gray-800">{completedModules.length}/6</p>
-                </div>
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <Target className="w-5 h-5 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Planning Progress</p>
-                  <p className="text-2xl font-bold text-gray-800">{Math.round((completedModules.length / 6) * 100)}%</p>
-                </div>
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Pending Actions</p>
-                  <p className="text-2xl font-bold text-gray-800">{pendingActions}</p>
-                </div>
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-amber-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Next Milestone</p>
-                  <p className="text-sm font-medium text-gray-800">{nextMilestone.date}</p>
-                </div>
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Planning Modules */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
-              <h2 className="text-2xl font-serif font-semibold text-gray-800 mb-6">Your Planning Modules</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {planningModules.map((module) => (
-                  <Card
-                    key={module.id}
-                    className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-gradient-to-br ${module.color} ${module.borderColor} border-2`}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-                            {module.icon}
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">{module.title}</CardTitle>
-                            <p className="text-sm text-gray-600">{module.description}</p>
-                          </div>
-                        </div>
-                        <Badge
-                          variant={module.status === "completed" ? "default" : "secondary"}
-                          className={module.status === "completed" ? "bg-green-500" : ""}
-                        >
-                          {module.status === "completed" ? "✓" : module.score}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      {module.status !== "completed" && (
-                        <div className="mb-4">
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Progress</span>
-                            <span>{module.score}%</span>
-                          </div>
-                          <Progress value={module.score} className="h-2" />
-                        </div>
-                      )}
-
-                      <div className="space-y-2 mb-4">
-                        <p className="text-sm font-medium text-gray-700">Next actions:</p>
-                        {module.actions.slice(0, 2).map((action, index) => (
-                          <div key={index} className="text-xs text-gray-600 flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                            {action}
-                          </div>
-                        ))}
-                      </div>
-
-                      <Link href={module.link}>
-                        <Button className="w-full bg-white text-gray-800 hover:bg-gray-100 shadow-sm">
-                          {module.status === "completed" ? "Review" : "Continue"}
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Recent Activity */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Activity className="w-5 h-5" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-gray-700">{activity}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {quickActions.map((action, index) => (
-                    <div key={index}>
-                      {action.link ? (
-                        <Link href={action.link}>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start h-auto p-3 text-left hover:bg-amber-50"
-                          >
-                            <div className="flex items-start gap-3">
-                              {action.icon}
-                              <div>
-                                <p className="font-medium text-sm">{action.title}</p>
-                                <p className="text-xs text-gray-600">{action.description}</p>
-                              </div>
-                            </div>
-                          </Button>
-                        </Link>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          onClick={action.action}
-                          className="w-full justify-start h-auto p-3 text-left hover:bg-amber-50"
-                        >
-                          <div className="flex items-start gap-3">
-                            {action.icon}
-                            <div>
-                              <p className="font-medium text-sm">{action.title}</p>
-                              <p className="text-xs text-gray-600">{action.description}</p>
-                            </div>
-                          </div>
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* AI Assistant Suggestions */}
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-amber-50 to-orange-50">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Brain className="w-5 h-5" />
-                  AI Suggestions
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {aiSuggestions.slice(0, 3).map((suggestion, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="w-full text-left justify-start h-auto p-3 border-amber-200 hover:bg-amber-100"
-                    >
-                      <div className="text-sm">{suggestion}</div>
-                    </Button>
-                  ))}
-                </div>
-                <div className="mt-4 pt-4 border-t border-amber-200">
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white">Open AI Assistant</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Next Milestone */}
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-purple-50 to-pink-50">
-              <CardContent className="p-6">
-                <div className="text-center">
-                  <h3 className="font-semibold text-gray-800 mb-2">Coming Up Next</h3>
-                  <p className="text-gray-600 mb-2">{nextMilestone.title}</p>
-                  <Badge className={`mb-3 ${getCategoryColor(nextMilestone.category)}`}>{nextMilestone.category}</Badge>
-                  <p className="text-sm text-gray-500 mb-4">
-                    {nextMilestone.date} • Age {nextMilestone.age}
-                  </p>
-                  <Link href="/planner">
-                    <Button size="sm" className="bg-purple-500 hover:bg-purple-600 text-white">
-                      View Timeline
-                      <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Quick Actions */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link href="/healthcare-costs">
+              <Button variant="outline" className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-blue-500"
+                >
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+                <span className="text-sm">Healthcare Costs</span>
+              </Button>
+            </Link>
+            <Link href="/care-scenarios">
+              <Button variant="outline" className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-purple-500"
+                >
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span className="text-sm">Care Scenarios</span>
+              </Button>
+            </Link>
+            <Link href="/planner">
+              <Button variant="outline" className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-amber-500"
+                >
+                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                  <line x1="16" x2="16" y1="2" y2="6" />
+                  <line x1="8" x2="8" y1="2" y2="6" />
+                  <line x1="3" x2="21" y1="10" y2="10" />
+                  <path d="m9 16 2 2 4-4" />
+                </svg>
+                <span className="text-sm">Timeline</span>
+              </Button>
+            </Link>
+            <Link href="/insights">
+              <Button variant="outline" className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-green-500"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                <span className="text-sm">Insights</span>
+              </Button>
+            </Link>
           </div>
         </div>
-
-        {/* Micro-celebration */}
-        {scoreChange > 0 && (
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50 mt-8">
-            <CardContent className="p-6 text-center">
-              <p className="text-green-800 font-medium text-lg">
-                🎉 Fantastic! You've improved your planning readiness by {scoreChange} points!
-              </p>
-              <p className="text-sm text-green-600 mt-2">
-                You're {Math.floor(scoreChange * 2)} steps closer to a well-planned future, {userName}!
-              </p>
-            </CardContent>
-          </Card>
-        )}
       </div>
+
+      {/* AI Assistant Planner */}
+      <AIAssistantPlanner currentAge={currentAge} viewMode="age" onAddMilestone={() => setShowAddMilestone(true)} />
     </div>
   )
 }

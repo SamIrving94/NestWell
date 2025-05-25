@@ -2,46 +2,62 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useNavigation } from "@/components/navigation-context"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { NestAnimation } from "@/components/nest-animation"
 import { FeatherFloat } from "@/components/feather-float"
 import { FeaturesSection } from "@/components/features-section"
+import Link from "next/link"
 
 export default function Home() {
   const router = useRouter()
+  const { state, getNextStep } = useNavigation()
   const [showContent, setShowContent] = useState(false)
   const [showHeadline, setShowHeadline] = useState(false)
   const [showSubtitle, setShowSubtitle] = useState(false)
   const [showButton, setShowButton] = useState(false)
-  const [isReturningUser, setIsReturningUser] = useState(false)
+  const [isCheckingUser, setIsCheckingUser] = useState(true)
 
   useEffect(() => {
-    // Check if user has completed onboarding and should go to hub
-    const hasCompletedScore = localStorage.getItem("nestwell-score-complete")
-    const hasVisitedHub = localStorage.getItem("nestwell-hub-visited")
+    // Check user status but don't enforce restrictions
+    const checkUserStatus = () => {
+      // Show landing page for everyone
+      setIsCheckingUser(false)
 
-    if (hasCompletedScore || hasVisitedHub) {
-      // Redirect returning users to hub
-      router.push("/hub")
-      return
+      // Animation sequence timing for new users
+      const timer1 = setTimeout(() => setShowContent(true), 1000)
+      const timer2 = setTimeout(() => setShowHeadline(true), 1500)
+      const timer3 = setTimeout(() => setShowSubtitle(true), 2500)
+      const timer4 = setTimeout(() => setShowButton(true), 3200)
+
+      return () => {
+        clearTimeout(timer1)
+        clearTimeout(timer2)
+        clearTimeout(timer3)
+        clearTimeout(timer4)
+      }
     }
 
-    // Animation sequence timing for new users
-    const timer1 = setTimeout(() => setShowContent(true), 2000) // After nest animation
-    const timer2 = setTimeout(() => setShowHeadline(true), 2500)
-    const timer3 = setTimeout(() => setShowSubtitle(true), 3500)
-    const timer4 = setTimeout(() => setShowButton(true), 4200)
+    const cleanup = checkUserStatus()
+    return cleanup
+  }, [router, state])
 
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-      clearTimeout(timer3)
-      clearTimeout(timer4)
-    }
-  }, [router])
+  const handleGetStarted = () => {
+    // Start the full journey through onboarding and score
+    router.push("/onboarding")
+  }
 
-  // New user experience
+  if (isCheckingUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your planning journey...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100">
       {/* Floating feathers */}
@@ -70,16 +86,17 @@ export default function Home() {
             With NestWell, you're never planning alone.
           </p>
 
-          {/* Call to action button */}
+          {/* Call to action buttons */}
           <div
             className={`transition-all duration-1000 delay-500 ${showButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
-            <Link href="/onboarding">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
+                onClick={handleGetStarted}
                 size="lg"
                 className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
               >
-                Begin Planning
+                Begin Planning Journey
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -96,7 +113,17 @@ export default function Home() {
                   <path d="M12 5l7 7-7 7" />
                 </svg>
               </Button>
-            </Link>
+
+              <Link href="/hub">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-amber-300 text-amber-700 hover:bg-amber-50 px-8 py-4 text-lg rounded-full"
+                >
+                  Skip to Hub Demo
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Welcome message for first-time users */}

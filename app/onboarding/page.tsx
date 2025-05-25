@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
 import Link from "next/link"
 import { OnboardingWelcome } from "@/components/onboarding-welcome"
 import { OnboardingStep1 } from "@/components/onboarding-step-1-enhanced"
@@ -12,106 +12,87 @@ import { OnboardingStep2 } from "@/components/onboarding-step-2-enhanced"
 import { OnboardingStep3 } from "@/components/onboarding-step-3-enhanced"
 import { OnboardingStep4 } from "@/components/onboarding-step-4-enhanced"
 import { OnboardingStep5 } from "@/components/onboarding-step-5-enhanced"
-import { NestProgress } from "@/components/nest-progress"
 import { FloatingFeather } from "@/components/floating-feather"
 
 export default function OnboardingPage() {
-  const [step, setStep] = useState(0) // 0 = welcome, 1-5 = steps
+  const router = useRouter()
+  const [currentStep, setCurrentStep] = useState(0)
+  const [showFeather, setShowFeather] = useState(false)
   const [formData, setFormData] = useState({
+    // Step 1: Life Snapshot
     age: 65,
-    maritalStatus: "",
-    employmentStatus: "",
-    pensionType: "",
+    maritalStatus: "married",
+    employmentStatus: "retired",
+
+    // Step 2: Financial Foundations
+    pensionType: "defined-benefit",
     monthlyIncome: 2000,
-    householdSavings: 50000,
+    householdSavings: 75000,
     majorDebts: false,
-    healthCoverage: "",
-    insuranceTypes: [],
-    lifeGoals: [],
+
+    // Step 3: Coverage Snapshot
+    healthCoverage: "nhs-only",
+    insuranceTypes: ["life-insurance"],
+
+    // Step 4: Lifestyle & Aspirations
+    lifeGoals: ["travel", "family", "wellness"],
     additionalGoals: "",
   })
-  const [showFeather, setShowFeather] = useState(false)
-  const [encouragementMessage, setEncouragementMessage] = useState("")
 
-  const router = useRouter()
-  const totalSteps = 5
-  const progress = step === 0 ? 0 : (step / totalSteps) * 100
+  const totalSteps = 6 // Welcome + 5 steps
+  const progress = Math.round((currentStep / (totalSteps - 1)) * 100)
 
-  const encouragementMessages = [
-    "You're doing brilliantly.",
-    "Take your time—we're here when you're ready.",
-    "Every step brings you closer to peace of mind.",
-    "You're building something wonderful.",
-    "Your future self will thank you for this.",
-  ]
-
-  useEffect(() => {
-    // Save progress to localStorage
-    if (step > 0) {
-      localStorage.setItem("nestwell-onboarding-step", step.toString())
-      localStorage.setItem("nestwell-onboarding-data", JSON.stringify(formData))
-    }
-  }, [step, formData])
-
-  useEffect(() => {
-    // Load saved progress
-    const savedStep = localStorage.getItem("nestwell-onboarding-step")
-    const savedData = localStorage.getItem("nestwell-onboarding-data")
-
-    if (savedStep && savedData) {
-      setStep(Number.parseInt(savedStep))
-      setFormData(JSON.parse(savedData))
-    }
-  }, [])
+  const updateFormData = (data: Partial<typeof formData>) => {
+    setFormData((prev) => ({ ...prev, ...data }))
+  }
 
   const handleNext = () => {
-    if (step < totalSteps) {
-      // Show encouragement message between steps
-      if (step > 0 && step < totalSteps) {
-        const randomMessage = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)]
-        setEncouragementMessage(randomMessage)
-        setTimeout(() => setEncouragementMessage(""), 3000)
-      }
-
-      // Trigger feather animation
+    if (currentStep < totalSteps - 1) {
+      // Show feather animation
       setShowFeather(true)
       setTimeout(() => setShowFeather(false), 2000)
 
-      setStep(step + 1)
       window.scrollTo(0, 0)
+      setCurrentStep((prev) => prev + 1)
     } else {
-      // Clear saved progress and go to score
-      localStorage.removeItem("nestwell-onboarding-step")
-      localStorage.removeItem("nestwell-onboarding-data")
-      router.push("/score")
+      // Final step - complete onboarding
+      completeOnboarding()
     }
   }
 
   const handleBack = () => {
-    if (step > 0) {
-      setStep(step - 1)
+    if (currentStep > 0) {
       window.scrollTo(0, 0)
+      setCurrentStep((prev) => prev - 1)
     }
   }
 
-  const updateFormData = (data: Partial<typeof formData>) => {
-    setFormData({ ...formData, ...data })
+  const completeOnboarding = () => {
+    // Save onboarding data
+    localStorage.setItem("nestwell-onboarding-data", JSON.stringify(formData))
+    localStorage.setItem("nestwell-onboarding-complete", "true")
+
+    // Navigate to score page
+    router.push("/score")
   }
 
-  const getStepTitle = () => {
-    switch (step) {
+  // Render the current step
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return <OnboardingWelcome onNext={handleNext} />
       case 1:
-        return "Life Snapshot"
+        return <OnboardingStep1 formData={formData} updateFormData={updateFormData} />
       case 2:
-        return "Financial Foundations"
+        return <OnboardingStep2 formData={formData} updateFormData={updateFormData} />
       case 3:
-        return "Coverage Snapshot"
+        return <OnboardingStep3 formData={formData} updateFormData={updateFormData} />
       case 4:
-        return "Lifestyle & Aspirations"
+        return <OnboardingStep4 formData={formData} updateFormData={updateFormData} />
       case 5:
-        return "Your Journey Summary"
+        return <OnboardingStep5 formData={formData} onNext={handleNext} />
       default:
-        return ""
+        return <OnboardingWelcome onNext={handleNext} />
     }
   }
 
@@ -144,68 +125,48 @@ export default function OnboardingPage() {
             <span className="text-xl font-semibold">NestWell</span>
           </Link>
 
-          {step > 0 && (
-            <div className="flex items-center gap-4">
-              <NestProgress step={step} totalSteps={totalSteps} />
-              <div className="text-sm text-gray-600">
-                Step {step} of {totalSteps}
-              </div>
-            </div>
-          )}
+          {/* Skip to hub link for demo purposes */}
+          <Link href="/hub" className="text-sm text-amber-600 hover:text-amber-700">
+            Skip to Hub Demo
+          </Link>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
-          {/* Progress bar for steps 1-5 */}
-          {step > 0 && (
+          {/* Progress bar (hidden on welcome screen) */}
+          {currentStep > 0 && (
             <div className="mb-8">
-              <div className="mb-2 flex justify-between text-sm">
-                <span className="font-medium">{getStepTitle()}</span>
-                <span>{Math.round(progress)}% complete</span>
+              <div className="flex justify-between text-sm text-gray-500 mb-2">
+                <span>Getting Started</span>
+                <span>
+                  Step {currentStep} of {totalSteps - 1}
+                </span>
               </div>
-              <Progress value={progress} className="h-3 bg-white/50" />
+              <Progress value={progress} className="h-2" />
             </div>
           )}
 
-          {/* Encouragement message */}
-          {encouragementMessage && (
-            <div className="mb-6 text-center">
-              <div className="inline-block bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium animate-fade-in">
-                {encouragementMessage}
-              </div>
-            </div>
-          )}
+          {/* Main content card */}
+          {currentStep > 0 ? (
+            <Card className="p-8 shadow-lg border-0 bg-white/90 backdrop-blur-sm">
+              {renderStep()}
 
-          {/* Step content */}
-          <Card className="border-0 shadow-lg bg-white/90 backdrop-blur-sm">
-            <CardContent className="pt-6">
-              {step === 0 && <OnboardingWelcome onNext={handleNext} />}
-              {step === 1 && <OnboardingStep1 formData={formData} updateFormData={updateFormData} />}
-              {step === 2 && <OnboardingStep2 formData={formData} updateFormData={updateFormData} />}
-              {step === 3 && <OnboardingStep3 formData={formData} updateFormData={updateFormData} />}
-              {step === 4 && <OnboardingStep4 formData={formData} updateFormData={updateFormData} />}
-              {step === 5 && <OnboardingStep5 formData={formData} onNext={handleNext} />}
-
-              {/* Navigation buttons for steps 1-4 */}
-              {step > 0 && step < 5 && (
-                <div className="flex justify-between mt-8">
-                  <Button variant="outline" onClick={handleBack} className="bg-white/50 hover:bg-white/80">
+              {/* Navigation buttons */}
+              {currentStep > 0 && currentStep < totalSteps - 1 && (
+                <div className="flex justify-between mt-12">
+                  <Button variant="outline" onClick={handleBack}>
                     Back
                   </Button>
-                  <Button onClick={handleNext} className="bg-amber-500 hover:bg-amber-600 text-white px-8">
+                  <Button onClick={handleNext} className="bg-amber-500 hover:bg-amber-600 text-white">
                     Continue
                   </Button>
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Reassuring message */}
-          {step > 0 && step < 5 && (
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">Over 2 million people are planning with us. You're not alone.</p>
-            </div>
+            </Card>
+          ) : (
+            // Welcome screen doesn't need a card
+            renderStep()
           )}
         </div>
       </main>

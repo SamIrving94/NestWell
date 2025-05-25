@@ -1,10 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useNavigation } from "@/components/navigation-context"
 import { CentralHub } from "@/components/central-hub"
 import { AIAssistant } from "@/components/ai-assistant"
+import Link from "next/link"
 
 export default function HubPage() {
+  const { state } = useNavigation()
   const [userData, setUserData] = useState({
     userName: "Sam",
     userScore: 77,
@@ -26,23 +29,59 @@ export default function HubPage() {
   })
 
   useEffect(() => {
-    // Load user data from localStorage or API
+    // Mark hub as visited for demo purposes
+    localStorage.setItem("nestwell-hub-visited", "true")
+
+    // Load user data from localStorage or navigation state
     const savedUserData = localStorage.getItem("nestwell-user-data")
     if (savedUserData) {
-      const parsed = JSON.parse(savedUserData)
-      setUserData((prev) => ({ ...prev, ...parsed }))
+      try {
+        const parsed = JSON.parse(savedUserData)
+        setUserData((prev) => ({ ...prev, ...parsed }))
+      } catch (error) {
+        console.error("Failed to parse user data:", error)
+      }
     }
 
-    // Mark that user has reached the hub
-    localStorage.setItem("nestwell-hub-visited", "true")
-  }, [])
+    // Update with navigation state
+    if (state.userScore) {
+      setUserData((prev) => ({
+        ...prev,
+        userScore: state.userScore,
+        completedModules: state.completedSteps,
+      }))
+    }
+
+    // If no user data exists, populate with demo data
+    if (!localStorage.getItem("nestwell-user-data")) {
+      const demoUserData = {
+        userName: "Sam",
+        userScore: 77,
+        scoreChange: 5,
+        lastVisit: new Date().toISOString(),
+        recentActivity: [
+          "Completed NestWell Score assessment",
+          "Reviewed financial health insights",
+          "Explored healthcare options",
+        ],
+        completedModules: ["score", "health-assessment"],
+      }
+      localStorage.setItem("nestwell-user-data", JSON.stringify(demoUserData))
+      setUserData(demoUserData)
+    }
+
+    // Set demo score if none exists
+    if (!localStorage.getItem("nestwell-user-score")) {
+      localStorage.setItem("nestwell-user-score", "77")
+    }
+  }, [state])
 
   return (
     <div className="min-h-screen">
       {/* Header Navigation */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <Link href="/hub" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -61,27 +100,27 @@ export default function HubPage() {
               </svg>
             </div>
             <span className="text-xl font-semibold">NestWell</span>
-          </div>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/hub" className="text-amber-600 font-medium">
+            <Link href="/hub" className="text-amber-600 font-medium">
               Dashboard
-            </a>
-            <a href="/insights" className="text-gray-600 hover:text-gray-800 transition-colors">
+            </Link>
+            <Link href="/insights" className="text-gray-600 hover:text-gray-800 transition-colors">
               Insights
-            </a>
-            <a href="/planner" className="text-gray-600 hover:text-gray-800 transition-colors">
+            </Link>
+            <Link href="/planner" className="text-gray-600 hover:text-gray-800 transition-colors">
               Timeline
-            </a>
-            <a href="/healthcare-costs" className="text-gray-600 hover:text-gray-800 transition-colors">
+            </Link>
+            <Link href="/healthcare-costs" className="text-gray-600 hover:text-gray-800 transition-colors">
               Healthcare
-            </a>
-            <a href="/care-scenarios" className="text-gray-600 hover:text-gray-800 transition-colors">
+            </Link>
+            <Link href="/care-scenarios" className="text-gray-600 hover:text-gray-800 transition-colors">
               Care Planning
-            </a>
-            <a href="/advice-comparison" className="text-gray-600 hover:text-gray-800 transition-colors">
+            </Link>
+            <Link href="/advice-comparison" className="text-gray-600 hover:text-gray-800 transition-colors">
               Advice Costs
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
