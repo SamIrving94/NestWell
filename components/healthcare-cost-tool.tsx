@@ -228,8 +228,12 @@ export function HealthcareCostTool({ userAge = 65, onAddToTimeline, onExploreIns
             >
               <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            Healthcare Cost Comparison
+            NHS vs Self-Insured vs Private Insurance
           </CardTitle>
+          <p className="text-gray-600">
+            Compare your three main options for healthcare costs: free NHS care (with wait times), paying yourself
+            (immediate access), or private insurance (immediate access with lower personal costs).
+          </p>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -359,21 +363,7 @@ export function HealthcareCostTool({ userAge = 65, onAddToTimeline, onExploreIns
                   <Card className="border-2 border-blue-200 bg-blue-50">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg flex items-center gap-2 text-blue-800">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M9 12l2 2 4-4" />
-                          <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h9l4-4-4-4H3" />
-                        </svg>
-                        NHS
+                        NHS (Free Healthcare)
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -405,22 +395,7 @@ export function HealthcareCostTool({ userAge = 65, onAddToTimeline, onExploreIns
                   <Card className="border-2 border-gray-200 bg-gray-50">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg flex items-center gap-2 text-gray-800">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                          <line x1="8" y1="21" x2="16" y2="21" />
-                          <line x1="12" y1="17" x2="12" y2="21" />
-                        </svg>
-                        Private (Self-Pay)
+                        Self-Insured (Pay Yourself)
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -445,21 +420,7 @@ export function HealthcareCostTool({ userAge = 65, onAddToTimeline, onExploreIns
                   <Card className="border-2 border-green-200 bg-green-50">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg flex items-center gap-2 text-green-800">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                          <path d="M9 12l2 2 4-4" />
-                        </svg>
-                        Private (Insured)
+                        Private Insurance (Covered)
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">

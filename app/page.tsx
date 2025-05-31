@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useNavigation } from "@/components/navigation-context"
 import { Button } from "@/components/ui/button"
 import { NestAnimation } from "@/components/nest-animation"
 import { FeatherFloat } from "@/components/feather-float"
@@ -11,7 +10,6 @@ import Link from "next/link"
 
 export default function Home() {
   const router = useRouter()
-  const { state, getNextStep } = useNavigation()
   const [showContent, setShowContent] = useState(false)
   const [showHeadline, setShowHeadline] = useState(false)
   const [showSubtitle, setShowSubtitle] = useState(false)
@@ -40,18 +38,18 @@ export default function Home() {
 
     const cleanup = checkUserStatus()
     return cleanup
-  }, [router, state])
+  }, [router])
 
   const handleGetStarted = () => {
-    // Start the full journey through onboarding and score
-    router.push("/onboarding")
+    // Start the new readiness journey
+    router.push("/readiness")
   }
 
   if (isCheckingUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 via-sand-50 to-navy-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your planning journey...</p>
         </div>
       </div>
@@ -59,7 +57,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-sky-100">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-teal-50 via-sand-50 to-navy-50">
       {/* Floating feathers */}
       <FeatherFloat />
 
@@ -74,7 +72,7 @@ export default function Home() {
         <div className={`text-center transition-opacity duration-1000 ${showContent ? "opacity-100" : "opacity-0"}`}>
           {/* Main headline with typewriter effect */}
           <h1
-            className={`text-4xl md:text-6xl font-serif mb-6 text-gray-800 transition-all duration-1000 ${showHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`text-4xl md:text-6xl font-serif mb-6 text-navy-800 transition-all duration-1000 ${showHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <span className="typewriter">{showHeadline && "Plan a life well-lived."}</span>
           </h1>
@@ -94,9 +92,9 @@ export default function Home() {
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
               >
-                Begin Planning Journey
+                Get Your Readiness Score
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -118,9 +116,33 @@ export default function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-amber-300 text-amber-700 hover:bg-amber-50 px-8 py-4 text-lg rounded-full"
+                  className="border-teal-300 text-teal-700 hover:bg-teal-50 px-8 py-4 text-lg rounded-full"
                 >
-                  Skip to Hub Demo
+                  Explore Demo Hub
+                </Button>
+              </Link>
+
+              <Link href="/nestcare">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-indigo-300 text-indigo-700 hover:bg-indigo-50 px-8 py-4 text-lg rounded-full group"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="mr-2 group-hover:scale-110 transition-transform duration-300"
+                  >
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z" />
+                  </svg>
+                  NestCare (Caregivers)
                 </Button>
               </Link>
             </div>
@@ -132,6 +154,14 @@ export default function Home() {
           >
             Welcome, we're so glad you're here.
           </p>
+
+          {/* NestCare explanation */}
+          <p
+            className={`mt-4 text-xs text-gray-400 max-w-lg mx-auto transition-all duration-1000 delay-800 ${showButton ? "opacity-100" : "opacity-0"}`}
+          >
+            <span className="font-medium text-indigo-600">NestCare</span> is for family members, friends, or those with
+            Power of Attorney helping someone else plan their future.
+          </p>
         </div>
       </div>
 
@@ -140,7 +170,7 @@ export default function Home() {
 
       {/* Subtle brand mark in corner */}
       <div className="absolute bottom-6 left-6 flex items-center gap-2 opacity-60">
-        <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"

@@ -14,6 +14,7 @@ interface InteractiveTimelineProps {
   onUpdateMilestone: (id: number, updates: any) => void
   onRemoveMilestone: (id: number) => void
   onShowQuote: () => void
+  onSelectMilestone?: (milestone: any) => void
 }
 
 export function InteractiveTimeline({
@@ -23,6 +24,7 @@ export function InteractiveTimeline({
   onUpdateMilestone,
   onRemoveMilestone,
   onShowQuote,
+  onSelectMilestone,
 }: InteractiveTimelineProps) {
   const [visibleEvents, setVisibleEvents] = useState<Set<string>>(new Set())
   const [showFeather, setShowFeather] = useState(false)
@@ -221,6 +223,7 @@ export function InteractiveTimeline({
                 onUpdate={onUpdateMilestone}
                 onRemove={onRemoveMilestone}
                 getCategoryColor={getCategoryColor}
+                onSelect={onSelectMilestone}
               />
             ))}
           </div>
@@ -248,6 +251,12 @@ export function InteractiveTimeline({
                       <Badge variant="outline" className={getCategoryColor(stage.category)}>
                         {stage.stage}
                       </Badge>
+                      {/* Score impact indicator for custom milestones */}
+                      {stage.scoreImpact && (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 mb-2">
+                          +{stage.scoreImpact} score
+                        </Badge>
+                      )}
                     </div>
                     <p className="text-gray-600 mb-3">{stage.description}</p>
                     <div className="flex items-center gap-2 text-sm text-gray-500">

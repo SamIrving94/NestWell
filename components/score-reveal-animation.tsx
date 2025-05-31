@@ -40,10 +40,10 @@ export function ScoreRevealAnimation({ score, showScore }: ScoreRevealAnimationP
   }, [showScore, score])
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "#22c55e" // green-500
-    if (score >= 60) return "#f59e0b" // amber-500
-    if (score >= 40) return "#f97316" // orange-500
-    return "#ef4444" // red-500
+    if (score >= 80) return "hsl(var(--accent-teal))"
+    if (score >= 60) return "hsl(var(--accent-amber))"
+    if (score >= 40) return "hsl(var(--accent-amber))"
+    return "hsl(var(--destructive))"
   }
 
   const radius = 120
@@ -58,7 +58,7 @@ export function ScoreRevealAnimation({ score, showScore }: ScoreRevealAnimationP
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-amber-400 rounded-full animate-confetti"
+              className="absolute w-2 h-2 bg-accent-amber rounded-full animate-confetti"
               style={{
                 left: `${50 + (Math.random() - 0.5) * 60}%`,
                 top: `${50 + (Math.random() - 0.5) * 60}%`,
@@ -149,6 +149,9 @@ export function ScoreRevealAnimation({ score, showScore }: ScoreRevealAnimationP
         >
           out of 100
         </div>
+
+        {/* Pulse effect for score increases */}
+        {showScore && <div className="absolute inset-0 rounded-full animate-score-pulse" />}
 
         {/* Pulse effect for high scores */}
         {score >= 70 && showScore && (

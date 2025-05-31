@@ -33,12 +33,10 @@ const STEP_ROUTES = {
   onboarding: "/onboarding",
   score: "/score",
   hub: "/hub",
-  insights: "/insights",
   planner: "/planner",
-  "healthcare-costs": "/healthcare-costs",
-  "care-scenarios": "/care-scenarios",
-  "advice-comparison": "/advice-comparison",
-  "health-lifestyle": "/health-lifestyle",
+  coverage: "/coverage",
+  "pension-savings": "/pension-savings",
+  "health-care-planning": "/health-care-planning",
 }
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {

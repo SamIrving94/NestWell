@@ -13,6 +13,7 @@ interface TimelineEventProps {
   onUpdate: (id: number, updates: any) => void
   onRemove: (id: number) => void
   getCategoryColor: (category: string) => string
+  onSelect?: (event: any) => void
 }
 
 export function TimelineEvent({
@@ -23,6 +24,7 @@ export function TimelineEvent({
   onUpdate,
   onRemove,
   getCategoryColor,
+  onSelect,
 }: TimelineEventProps) {
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -49,13 +51,20 @@ export function TimelineEvent({
       <Card
         ref={cardRef}
         data-event-id={event.id}
-        className={`border-0 shadow-lg transition-all duration-700 hover:shadow-xl hover:scale-105 ${
+        className={`border-0 shadow-lg transition-all duration-700 hover:shadow-xl cursor-pointer ${
           index % 2 === 0 ? "mt-16" : "mb-16"
-        } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${onSelect ? "hover:scale-105" : ""}`}
         style={{ transitionDelay: `${index * 200}ms` }}
+        onClick={() => onSelect?.(event)}
       >
         <CardContent className="pt-6">
           <div className="text-center">
+            {event.scoreImpact && (
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 mb-2">
+                +{event.scoreImpact} Planning Score
+              </Badge>
+            )}
+
             {/* Icon */}
             <div className="w-12 h-12 mx-auto mb-3 bg-amber-100 rounded-full flex items-center justify-center text-2xl">
               {event.icon}
