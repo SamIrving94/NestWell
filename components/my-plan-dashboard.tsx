@@ -100,17 +100,19 @@ export function MyPlanDashboard({
   ]
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto section-padding-responsive">
       <div className="max-w-7xl mx-auto">
         {/* Header Overview */}
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             {/* Welcome & Score */}
             <div className="flex-1">
-              <h1 className="text-3xl font-medium text-primary mb-2">
+              <h1 className="text-responsive-h1 text-primary mb-1 sm:mb-2 font-medium">
                 {getGreeting()}, <span className="text-accent-teal">Sam</span>
               </h1>
-              <p className="text-muted-foreground mb-4">Here's your complete planning overview</p>
+              <p className="text-responsive-body text-muted-foreground mb-2 sm:mb-4">
+                Here's your complete planning overview
+              </p>
 
               {/* Readiness Score Overview */}
               <div className="flex items-center gap-4">
@@ -119,7 +121,7 @@ export function MyPlanDashboard({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className={`text-2xl font-bold ${getReadinessColor(readinessScore)}`}>
+                    <h2 className={`text-lg sm:text-xl md:text-2xl font-bold ${getReadinessColor(readinessScore)}`}>
                       {getReadinessLabel(readinessScore)}
                     </h2>
                     <button
@@ -130,7 +132,9 @@ export function MyPlanDashboard({
                       <Info className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-gray-600 text-sm">Your NestWell Readiness Score: {readinessScore}/100</p>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    Your NestWell Readiness Score: {readinessScore}/100
+                  </p>
 
                   {/* Tooltip */}
                   {showTooltip && (
@@ -151,29 +155,29 @@ export function MyPlanDashboard({
             </div>
 
             {/* Sub-scores */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4">
               <Card className="border-0 shadow-sm bg-gradient-to-br from-accent-teal/10 to-accent-teal/5">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-semibold text-accent-teal">{subScores.finance}</div>
-                  <div className="text-sm text-muted-foreground">Finance</div>
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-semibold text-accent-teal">{subScores.finance}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Finance</div>
                 </CardContent>
               </Card>
               <Card className="border-0 shadow-sm bg-gradient-to-br from-accent-amber/10 to-accent-amber/5">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-semibold text-accent-amber">{subScores.coverage}</div>
-                  <div className="text-sm text-muted-foreground">Coverage</div>
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-semibold text-accent-amber">{subScores.coverage}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Coverage</div>
                 </CardContent>
               </Card>
               <Card className="border-0 shadow-sm bg-gradient-to-br from-accent-blue-grey/10 to-accent-blue-grey/5">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-semibold text-primary">{subScores.health}</div>
-                  <div className="text-sm text-muted-foreground">Health</div>
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-semibold text-primary">{subScores.health}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Health</div>
                 </CardContent>
               </Card>
               <Card className="border-0 shadow-sm bg-gradient-to-br from-accent-teal/10 to-accent-teal/5">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-semibold text-accent-teal">{subScores.planning}</div>
-                  <div className="text-sm text-muted-foreground">Planning</div>
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-semibold text-accent-teal">{subScores.planning}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Planning</div>
                 </CardContent>
               </Card>
             </div>
@@ -207,7 +211,7 @@ export function MyPlanDashboard({
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="mb-8">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-3 gap-1 sm:gap-2 mb-4 sm:mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="modules">Modules</TabsTrigger>
             <TabsTrigger value="progress">Progress</TabsTrigger>
@@ -219,44 +223,44 @@ export function MyPlanDashboard({
               <ActionCarousel actions={enhancedActions} />
 
               {/* Quick Stats Grid */}
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                 <Card className="border-0 shadow-md">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Target className="w-5 h-5 text-green-500" />
+                  <CardHeader className="pb-1 sm:pb-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-1 sm:gap-2">
+                      <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                       Actions Completed
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold text-gray-800 mb-1">{recentActivity.length}</div>
-                    <p className="text-sm text-gray-600">This week</p>
+                    <div className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">{recentActivity.length}</div>
+                    <p className="text-xs sm:text-sm text-gray-600">This week</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-md">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-blue-500" />
+                  <CardHeader className="pb-1 sm:pb-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-1 sm:gap-2">
+                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                       Upcoming Milestones
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold text-gray-800 mb-1">{upcomingMilestones.length}</div>
-                    <p className="text-sm text-gray-600">Next 3 months</p>
+                    <div className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">{upcomingMilestones.length}</div>
+                    <p className="text-xs sm:text-sm text-gray-600">Next 3 months</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-md">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-purple-500" />
+                  <CardHeader className="pb-1 sm:pb-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-1 sm:gap-2">
+                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                       Score Trend
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
-                      <div className="text-3xl font-bold text-green-600">+5</div>
-                      <div className="text-sm text-gray-600">This month</div>
+                      <div className="text-2xl sm:text-3xl font-bold text-green-600">+5</div>
+                      <div className="text-xs sm:text-sm text-gray-600">This month</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -267,13 +271,16 @@ export function MyPlanDashboard({
                 <CardHeader>
                   <CardTitle>Upcoming Milestones</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 md:p-6">
                   <div className="space-y-4">
                     {upcomingMilestones.map((milestone, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 sm:p-3 md:p-4 bg-gray-50 rounded-lg"
+                      >
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                               milestone.category === "finance"
                                 ? "bg-teal-100 text-teal-600"
                                 : milestone.category === "coverage"
@@ -283,11 +290,11 @@ export function MyPlanDashboard({
                                     : "bg-purple-100 text-purple-600"
                             }`}
                           >
-                            <Calendar className="w-5 h-5" />
+                            <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
                           <div>
-                            <div className="font-medium">{milestone.title}</div>
-                            <div className="text-sm text-gray-600">
+                            <div className="font-medium text-sm sm:text-base">{milestone.title}</div>
+                            <div className="text-xs sm:text-sm text-gray-600">
                               {milestone.date} • Age {milestone.age}
                             </div>
                           </div>
@@ -317,12 +324,12 @@ export function MyPlanDashboard({
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 sm:p-4 md:p-6">
             <div className="space-y-3">
               {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div key={index} className="flex items-center gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
                   <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">{activity}</span>
+                  <span className="text-xs sm:text-sm text-gray-700">{activity}</span>
                   <Badge variant="secondary" className="ml-auto text-xs">
                     {index === 0 ? "Today" : index === 1 ? "Yesterday" : "3 days ago"}
                   </Badge>

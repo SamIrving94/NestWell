@@ -112,18 +112,18 @@ export function AdviceComparisonTool() {
     return (
       <div className="max-w-2xl mx-auto">
         <Card className="border-0 shadow-lg">
-          <CardHeader className="text-center pb-6">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Calculator className="w-8 h-8 text-amber-600" />
+          <CardHeader className="text-center pb-4 sm:pb-6">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calculator className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600" />
             </div>
-            <CardTitle className="text-2xl font-serif">Financial Advice Cost Comparison</CardTitle>
-            <CardDescription className="text-lg">
+            <CardTitle className="text-xl sm:text-2xl font-serif">Financial Advice Cost Comparison</CardTitle>
+            <CardDescription className="text-base sm:text-lg">
               Discover how much you could save with different advice models
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
             <div>
-              <label className="block text-sm font-medium mb-3">
+              <label className="block text-xs sm:text-sm font-medium mb-2 sm:mb-3">
                 Roughly how much do you have across pensions and investments?
               </label>
               <div className="px-4">
@@ -137,15 +137,17 @@ export function AdviceComparisonTool() {
                 />
                 <div className="flex justify-between text-sm text-gray-500 mt-2">
                   <span>£50k</span>
-                  <span className="font-semibold text-lg text-gray-800">{formatCurrency(portfolioAmount[0])}</span>
+                  <span className="font-semibold text-base sm:text-lg text-gray-800">
+                    {formatCurrency(portfolioAmount[0])}
+                  </span>
                   <span>£1M+</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-amber-50 p-4 rounded-lg">
-              <p className="text-sm text-amber-800">
-                <Info className="w-4 h-4 inline mr-2" />
+              <p className="text-xs sm:text-sm text-amber-800">
+                <Info className="w-3 h-3 sm:w-4 sm:h-4 inline mr-2" />
                 This comparison will show you the real cost of different advice models over time, helping you make an
                 informed decision about your financial future.
               </p>
@@ -153,7 +155,7 @@ export function AdviceComparisonTool() {
 
             <Button
               onClick={handleStartComparison}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white py-3"
+              className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 sm:py-3"
               size="lg"
             >
               Compare Advice Costs
@@ -175,16 +177,18 @@ export function AdviceComparisonTool() {
       <div className="space-y-6">
         {/* Header with portfolio amount */}
         <Card className="border-0 shadow-sm bg-gradient-to-r from-amber-50 to-orange-50">
-          <CardContent className="p-6">
+          <CardContent className="p-3 sm:p-4 md:p-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Your Portfolio: {formatCurrency(portfolioAmount[0])}</h3>
-              <p className="text-gray-600">Annual advice costs comparison</p>
+              <h3 className="text-base sm:text-lg font-semibold mb-2">
+                Your Portfolio: {formatCurrency(portfolioAmount[0])}
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600">Annual advice costs comparison</p>
             </div>
           </CardContent>
         </Card>
 
         {/* Comparison Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {adviceModels.map((model, index) => {
             const annualFee = model.calculateFee(portfolioAmount[0])
             const tenYearImpact = calculateTenYearImpact(annualFee, portfolioAmount[0])
@@ -198,24 +202,24 @@ export function AdviceComparisonTool() {
                     Best Value
                   </Badge>
                 )}
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2 sm:pb-3">
                   <div className="flex items-center gap-2">
                     {model.icon}
-                    <CardTitle className="text-lg">{model.name}</CardTitle>
+                    <CardTitle className="text-base sm:text-lg">{model.name}</CardTitle>
                   </div>
-                  <CardDescription className="text-sm">{model.description}</CardDescription>
+                  <CardDescription className="text-xs sm:text-sm">{model.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-4">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{formatCurrency(annualFee)}</div>
-                    <div className="text-sm text-gray-600">{feePercentage.toFixed(2)}% annually</div>
+                    <div className="text-xl sm:text-2xl font-bold text-gray-900">{formatCurrency(annualFee)}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">{feePercentage.toFixed(2)}% annually</div>
                   </div>
 
                   <div className="space-y-2">
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div className="flex justify-between items-center cursor-help">
-                          <span className="text-sm">10-year impact:</span>
+                          <span className="text-xs sm:text-sm">10-year impact:</span>
                           <span className="font-semibold">{formatCurrency(tenYearImpact)}</span>
                         </div>
                       </TooltipTrigger>
@@ -230,7 +234,7 @@ export function AdviceComparisonTool() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-xs">
+                    <div className="text-2xs sm:text-xs">
                       <strong className="text-green-600">Pros:</strong>
                       <ul className="list-disc list-inside mt-1 space-y-1">
                         {model.pros.slice(0, 2).map((pro, i) => (
@@ -238,7 +242,7 @@ export function AdviceComparisonTool() {
                         ))}
                       </ul>
                     </div>
-                    <div className="text-xs">
+                    <div className="text-2xs sm:text-xs">
                       <strong className="text-red-600">Cons:</strong>
                       <ul className="list-disc list-inside mt-1 space-y-1">
                         {model.cons.slice(0, 2).map((con, i) => (
@@ -255,31 +259,40 @@ export function AdviceComparisonTool() {
 
         {/* Insights Section */}
         <Card className="border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-                <h3 className="text-xl font-semibold">Your Potential Savings</h3>
+                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                <h3 className="text-lg sm:text-xl font-semibold">Your Potential Savings</h3>
               </div>
 
               {potentialSavings > 0 ? (
                 <div>
-                  <p className="text-lg text-gray-700 mb-2">
+                  <p className="text-base sm:text-lg text-gray-700 mb-2">
                     Over 10 years, you could save{" "}
-                    <strong className="text-green-600 text-2xl">{formatCurrency(potentialSavings * 10)}</strong> with a
-                    lower-cost advice model.
+                    <strong className="text-green-600 text-xl sm:text-2xl">
+                      {formatCurrency(potentialSavings * 10)}
+                    </strong>{" "}
+                    with a lower-cost advice model.
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     That's money that stays invested and compounds for your future.
                   </p>
                 </div>
               ) : (
-                <p className="text-lg text-gray-700">You're already using a cost-effective advice model!</p>
+                <p className="text-base sm:text-lg text-gray-700">
+                  You're already using a cost-effective advice model!
+                </p>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
-                <Button className="bg-green-600 hover:bg-green-700 text-white">Explore Lower-Fee Options</Button>
-                <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mt-4 sm:mt-6">
+                <Button className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white">
+                  Explore Lower-Fee Options
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto border-green-600 text-green-600 hover:bg-green-50"
+                >
                   Plan Your Next Move
                 </Button>
               </div>
@@ -289,10 +302,10 @@ export function AdviceComparisonTool() {
 
         {/* Educational Note */}
         <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex gap-3">
-              <Info className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-amber-800">
+              <Info className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="text-xs sm:text-sm text-amber-800">
                 <p className="font-semibold mb-1">Important Note:</p>
                 <p>
                   This comparison is for illustration purposes. The right advice model depends on your specific needs,

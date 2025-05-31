@@ -269,17 +269,17 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-2 sm:px-0">
       {/* Header with Quick Info */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg border border-indigo-100">
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 sm:p-6 rounded-lg border border-indigo-100">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-semibold text-xl">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-100 rounded-full flex items-center justify-center text-lg sm:text-xl font-semibold text-indigo-700">
               {recipient.avatar}
             </div>
             <div>
-              <h1 className="text-2xl font-serif font-semibold text-gray-800">{recipient.name}</h1>
-              <p className="text-gray-600">{recipient.relationship}</p>
+              <h1 className="text-xl sm:text-2xl font-serif font-semibold text-gray-800">{recipient.name}</h1>
+              <p className="text-sm sm:text-base text-gray-600">{recipient.relationship}</p>
               <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -305,14 +305,14 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
         </div>
 
         {/* Quick Status Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded-lg border border-indigo-100">
             <div className="flex items-center gap-2 mb-1">
               <Heart className="w-4 h-4 text-red-500" />
               <span className="text-sm font-medium">Health Status</span>
             </div>
-            <div className="text-lg font-semibold text-green-700">Stable</div>
-            <div className="text-xs text-gray-500">{healthData.conditions.length} conditions monitored</div>
+            <div className="text-base sm:text-lg font-semibold text-green-700">Stable</div>
+            <div className="text-2xs sm:text-xs text-gray-500">{healthData.conditions.length} conditions monitored</div>
           </div>
 
           <div className="bg-white p-4 rounded-lg border border-indigo-100">
@@ -320,8 +320,10 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
               <PoundSterling className="w-4 h-4 text-green-500" />
               <span className="text-sm font-medium">Financial Health</span>
             </div>
-            <div className="text-lg font-semibold text-green-700">Good</div>
-            <div className="text-xs text-gray-500">£{financialData.totalBalance.toLocaleString()} available</div>
+            <div className="text-base sm:text-lg font-semibold text-green-700">Good</div>
+            <div className="text-2xs sm:text-xs text-gray-500">
+              £{financialData.totalBalance.toLocaleString()} available
+            </div>
           </div>
 
           <div className="bg-white p-4 rounded-lg border border-indigo-100">
@@ -329,10 +331,10 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               <span className="text-sm font-medium">Urgent Tasks</span>
             </div>
-            <div className="text-lg font-semibold text-amber-700">
+            <div className="text-base sm:text-lg font-semibold text-amber-700">
               {careTasks.filter((task) => task.priority === "high").length}
             </div>
-            <div className="text-xs text-gray-500">Require attention</div>
+            <div className="text-2xs sm:text-xs text-gray-500">Require attention</div>
           </div>
 
           <div className="bg-white p-4 rounded-lg border border-indigo-100">
@@ -340,15 +342,15 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
               <Calendar className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium">Next Appointment</span>
             </div>
-            <div className="text-lg font-semibold text-blue-700">Feb 2</div>
-            <div className="text-xs text-gray-500">GP Check-up</div>
+            <div className="text-base sm:text-lg font-semibold text-blue-700">Feb 2</div>
+            <div className="text-2xs sm:text-xs text-gray-500">GP Check-up</div>
           </div>
         </div>
       </div>
 
       {/* Main Dashboard Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-1 sm:gap-2">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="health">Health</TabsTrigger>
           <TabsTrigger value="finances">Finances</TabsTrigger>
@@ -361,15 +363,15 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Health Snapshot */}
             <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-red-500" />
+              <CardHeader className="card-padding-responsive">
+                <CardTitle className="flex items-center gap-2 text-responsive-h3">
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
                   Health Snapshot
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="card-padding-responsive space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2">Key Conditions</h4>
+                  <h4 className="font-medium mb-2 text-sm sm:text-base">Key Conditions</h4>
                   <div className="space-y-2">
                     {healthData.conditions.slice(0, 3).map((condition, index) => (
                       <div key={index} className="flex items-center justify-between">
@@ -383,10 +385,10 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-2">Recent Care Notes</h4>
+                  <h4 className="font-medium mb-2 text-sm sm:text-base">Recent Care Notes</h4>
                   <div className="space-y-2">
                     {healthData.careNotes.slice(0, 2).map((note, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="p-2 sm:p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-xs text-gray-500">
                             {note.date} - {note.author}
@@ -404,7 +406,7 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full"
+                  className="w-full text-sm sm:text-base"
                   onClick={() => router.push(`/nestcare/health/${recipient.id}`)}
                 >
                   <Stethoscope className="w-4 h-4 mr-1" />
@@ -415,13 +417,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
             {/* Financial Snapshot */}
             <Card className="border-0 shadow-lg">
-              <CardHeader>
+              <CardHeader className="card-padding-responsive">
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-500" />
                   Financial Snapshot
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="card-padding-responsive space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-3 bg-green-50 rounded-lg">
                     <div className="text-2xl font-bold text-green-700">
@@ -470,13 +472,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
           {/* Assistant Tips */}
           <Card className="border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-purple-50">
-            <CardHeader>
+            <CardHeader className="card-padding-responsive">
               <CardTitle className="flex items-center gap-2">
                 <Bell className="w-5 h-5 text-indigo-600" />
                 Care Assistant Tips
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="card-padding-responsive">
               <div className="space-y-3">
                 {assistantTips.map((tip, index) => (
                   <Alert key={index} className="border-indigo-200">
@@ -498,10 +500,10 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Conditions */}
             <Card className="border-0 shadow-lg">
-              <CardHeader>
+              <CardHeader className="card-padding-responsive">
                 <CardTitle>Medical Conditions</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="card-padding-responsive">
                 <div className="space-y-3">
                   {healthData.conditions.map((condition, index) => (
                     <div key={index} className="p-3 border rounded-lg">
@@ -520,13 +522,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
             {/* Medications */}
             <Card className="border-0 shadow-lg">
-              <CardHeader>
+              <CardHeader className="card-padding-responsive">
                 <CardTitle className="flex items-center gap-2">
                   <Pill className="w-5 h-5" />
                   Current Medications
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="card-padding-responsive">
                 <div className="space-y-3">
                   {healthData.medications.map((med, index) => (
                     <div key={index} className="p-3 border rounded-lg">
@@ -548,13 +550,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
         <TabsContent value="timeline" className="space-y-6">
           <Card className="border-0 shadow-lg">
-            <CardHeader>
+            <CardHeader className="card-padding-responsive">
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
                 Upcoming Milestones
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="card-padding-responsive">
               <div className="space-y-4">
                 {upcomingMilestones.map((milestone, index) => (
                   <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
@@ -590,13 +592,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
         <TabsContent value="tasks" className="space-y-6">
           <Card className="border-0 shadow-lg">
-            <CardHeader>
+            <CardHeader className="card-padding-responsive">
               <CardTitle className="flex items-center gap-2">
                 <CheckSquare className="w-5 h-5" />
                 Care Tasks
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="card-padding-responsive">
               <div className="space-y-3">
                 {careTasks.map((task) => (
                   <div key={task.id} className="flex items-center gap-4 p-4 border rounded-lg">
@@ -626,13 +628,13 @@ export function CareDashboard({ recipient }: CareDashboardProps) {
 
         <TabsContent value="documents" className="space-y-6">
           <Card className="border-0 shadow-lg">
-            <CardHeader>
+            <CardHeader className="card-padding-responsive">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
                 Document Quick Links
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="card-padding-responsive">
               <div className="grid md:grid-cols-2 gap-4">
                 {[
                   { name: "Power of Attorney", type: "Legal", lastUpdated: "2023-05-15" },
