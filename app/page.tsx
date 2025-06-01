@@ -57,14 +57,14 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-gradient-to-br from-teal-50 via-sand-50 to-navy-50">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-teal-50 via-sand-50 to-navy-50">
       {/* Floating feathers */}
       <FeatherFloat />
 
       {/* Main content container */}
-      <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen px-4 relative z-10">
         {/* Nest Animation */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-8">
           <NestAnimation />
         </div>
 
@@ -72,27 +72,27 @@ export default function Home() {
         <div className={`text-center transition-opacity duration-1000 ${showContent ? "opacity-100" : "opacity-0"}`}>
           {/* Main headline with typewriter effect */}
           <h1
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif mb-4 sm:mb-6 text-navy-800 transition-all duration-1000 ${showHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`text-4xl md:text-6xl font-serif mb-6 text-navy-800 transition-all duration-1000 ${showHeadline ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <span className="typewriter">{showHeadline && "Plan a life well-lived."}</span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-10 md:mb-12 text-gray-600 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`text-xl md:text-2xl mb-12 text-gray-600 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             With NestWell, you're never planning alone.
           </p>
 
           {/* Call to action buttons */}
           <div
-            className={`transition-all duration-1000 delay-500 w-full px-4 sm:px-0 sm:w-auto ${showButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`transition-all duration-1000 delay-500 ${showButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group w-full sm:w-auto"
+                className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
               >
                 Get Your Readiness Score
                 <svg
@@ -115,8 +115,8 @@ export default function Home() {
               <Link href="/hub">
                 <Button
                   variant="outline"
-                  size="lg" // size prop primarily affects padding, let's keep it for consistency or adjust if needed
-                  className="border-teal-300 text-teal-700 hover:bg-teal-50 px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-lg rounded-full w-full sm:w-auto"
+                  size="lg"
+                  className="border-teal-300 text-teal-700 hover:bg-teal-50 px-8 py-4 text-lg rounded-full"
                 >
                   Explore Demo Hub
                 </Button>
@@ -125,8 +125,8 @@ export default function Home() {
               <Link href="/nestcare">
                 <Button
                   variant="outline"
-                  size="lg" // size prop primarily affects padding
-                  className="border-indigo-300 text-indigo-700 hover:bg-indigo-50 px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-lg rounded-full group w-full sm:w-auto"
+                  size="lg"
+                  className="border-indigo-300 text-indigo-700 hover:bg-indigo-50 px-8 py-4 text-lg rounded-full group"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -150,14 +150,14 @@ export default function Home() {
 
           {/* Welcome message for first-time users */}
           <p
-            className={`mt-6 sm:mt-8 text-xs sm:text-sm text-gray-500 transition-all duration-1000 delay-700 ${showButton ? "opacity-100" : "opacity-0"}`}
+            className={`mt-8 text-sm text-gray-500 transition-all duration-1000 delay-700 ${showButton ? "opacity-100" : "opacity-0"}`}
           >
             Welcome, we're so glad you're here.
           </p>
 
           {/* NestCare explanation */}
           <p
-            className={`mt-3 sm:mt-4 text-[11px] sm:text-xs text-gray-400 max-w-lg mx-auto transition-all duration-1000 delay-800 ${showButton ? "opacity-100" : "opacity-0"}`}
+            className={`mt-4 text-xs text-gray-400 max-w-lg mx-auto transition-all duration-1000 delay-800 ${showButton ? "opacity-100" : "opacity-0"}`}
           >
             <span className="font-medium text-indigo-600">NestCare</span> is for family members, friends, or those with
             Power of Attorney helping someone else plan their future.

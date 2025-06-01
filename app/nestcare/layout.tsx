@@ -65,13 +65,15 @@ export default function NestCareLayout({ children }: NestCareLayoutProps) {
 
       {/* Header with Role Switcher */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
-        <div className="container mx-auto px-4 py-3 sm:py-4">
-          <div className="flex justify-between items-center gap-2">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-500 flex items-center justify-center">
-                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        <div className="container mx-auto py-4 px-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-semibold">NestCare</span>
               </div>
-              <span className="text-lg sm:text-xl font-semibold">NestCare</span>
             </div>
 
             <RoleSwitcher

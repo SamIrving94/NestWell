@@ -111,64 +111,62 @@ export function PensionSavingsTracker({ data, onUpdate }: PensionSavingsTrackerP
   }
 
   return (
-    <div className="container mx-auto section-padding-responsive">
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-responsive-h1 text-gray-800 mb-1 sm:mb-2 font-serif font-semibold">
-            Pension & Savings Tracker
-          </h1>
-          <p className="text-responsive-body text-gray-600 mb-4 sm:mb-6">
+          <h1 className="text-3xl font-serif font-semibold text-gray-800 mb-2">Pension & Savings Tracker</h1>
+          <p className="text-gray-600 mb-6">
             Track your retirement assets and plan for your financial future with confidence.
           </p>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <Card className="border-0 shadow-md bg-gradient-to-br from-teal-50 to-teal-100">
-              <CardContent className="p-3 sm:p-4">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <PiggyBank className="w-6 h-6 sm:w-8 sm:h-8 text-teal-600" />
+                  <PiggyBank className="w-8 h-8 text-teal-600" />
                   <div>
-                    <div className="text-xl sm:text-2xl font-bold text-teal-800">£{totalAssets.toLocaleString()}</div>
-                    <div className="text-xs sm:text-sm text-teal-600">Total Assets</div>
+                    <div className="text-2xl font-bold text-teal-800">£{totalAssets.toLocaleString()}</div>
+                    <div className="text-sm text-teal-600">Total Assets</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100">
-              <CardContent className="p-3 sm:p-4">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
                   <div>
-                    <div className="text-xl sm:text-2xl font-bold text-blue-800">£{totalMonthlyContributions}</div>
-                    <div className="text-xs sm:text-sm text-blue-600">Monthly Contributions</div>
+                    <div className="text-2xl font-bold text-blue-800">£{totalMonthlyContributions}</div>
+                    <div className="text-sm text-blue-600">Monthly Contributions</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-md bg-gradient-to-br from-purple-50 to-purple-100">
-              <CardContent className="p-3 sm:p-4">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Calculator className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
+                  <Calculator className="w-8 h-8 text-purple-600" />
                   <div>
-                    <div className="text-xl sm:text-2xl font-bold text-purple-800">
+                    <div className="text-2xl font-bold text-purple-800">
                       £{data.projections.age65.monthlyIncome.toLocaleString()}
                     </div>
-                    <div className="text-xs sm:text-sm text-purple-600">Projected at 65</div>
+                    <div className="text-sm text-purple-600">Projected at 65</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-md bg-gradient-to-br from-amber-50 to-amber-100">
-              <CardContent className="p-3 sm:p-4">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Target className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600" />
+                  <Target className="w-8 h-8 text-amber-600" />
                   <div>
-                    <div className="text-xl sm:text-2xl font-bold text-amber-800">{data.goals.length}</div>
-                    <div className="text-xs sm:text-sm text-amber-600">Active Goals</div>
+                    <div className="text-2xl font-bold text-amber-800">{data.goals.length}</div>
+                    <div className="text-sm text-amber-600">Active Goals</div>
                   </div>
                 </div>
               </CardContent>
@@ -178,7 +176,7 @@ export function PensionSavingsTracker({ data, onUpdate }: PensionSavingsTrackerP
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="mb-8">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2 mb-4 sm:mb-6">
+          <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="pensions">Pensions</TabsTrigger>
             <TabsTrigger value="savings">Savings</TabsTrigger>
@@ -195,27 +193,27 @@ export function PensionSavingsTracker({ data, onUpdate }: PensionSavingsTrackerP
                 <CardHeader>
                   <CardTitle>Quick Actions</CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 sm:p-4 md:p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Button
                       onClick={() => setShowAddPension(true)}
-                      className="h-16 sm:h-20 flex flex-col gap-1 sm:gap-2 bg-teal-500 hover:bg-teal-600"
+                      className="h-20 flex flex-col gap-2 bg-teal-500 hover:bg-teal-600"
                     >
-                      <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
+                      <Plus className="w-6 h-6" />
                       Add Pension
                     </Button>
                     <Button
                       onClick={() => setShowAddSavings(true)}
-                      className="h-16 sm:h-20 flex flex-col gap-1 sm:gap-2 bg-blue-500 hover:bg-blue-600"
+                      className="h-20 flex flex-col gap-2 bg-blue-500 hover:bg-blue-600"
                     >
-                      <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
+                      <Plus className="w-6 h-6" />
                       Add Savings
                     </Button>
                     <Button
                       onClick={() => setShowCreateGoal(true)}
-                      className="h-16 sm:h-20 flex flex-col gap-1 sm:gap-2 bg-purple-500 hover:bg-purple-600"
+                      className="h-20 flex flex-col gap-2 bg-purple-500 hover:bg-purple-600"
                     >
-                      <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
+                      <Plus className="w-6 h-6" />
                       Create Goal
                     </Button>
                   </div>
@@ -227,25 +225,25 @@ export function PensionSavingsTracker({ data, onUpdate }: PensionSavingsTrackerP
                 <CardHeader>
                   <CardTitle>Recent Activity</CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 sm:p-4 md:p-6">
+                <CardContent>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-2 sm:p-3 bg-teal-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-teal-50 rounded-lg">
                       <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-xs sm:text-sm text-gray-700">Added workplace pension contribution</span>
+                      <span className="text-sm text-gray-700">Added workplace pension contribution</span>
                       <Badge variant="secondary" className="ml-auto text-xs">
                         Today
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-3 p-2 sm:p-3 bg-blue-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="text-xs sm:text-sm text-gray-700">Updated ISA target amount</span>
+                      <span className="text-sm text-gray-700">Updated ISA target amount</span>
                       <Badge variant="secondary" className="ml-auto text-xs">
                         Yesterday
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-3 p-2 sm:p-3 bg-purple-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span className="text-xs sm:text-sm text-gray-700">Created long-term care savings goal</span>
+                      <span className="text-sm text-gray-700">Created long-term care savings goal</span>
                       <Badge variant="secondary" className="ml-auto text-xs">
                         3 days ago
                       </Badge>
